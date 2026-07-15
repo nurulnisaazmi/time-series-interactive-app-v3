@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Time Series Analysis & Forecasting Interactive Course V3</title>
+<style>
+:root{--navy:#07152f;--blue:#2457ff;--purple:#7045dc;--cyan:#20cce9;--ink:#17223d;--muted:#69758d;--good:#139b65;--bad:#dc4050}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--ink);background:linear-gradient(135deg,#eef4ff,#faf6ff);min-height:100vh}button,input{font:inherit}.hidden{display:none!important}
+.hero{min-height:100vh;display:grid;place-items:center;padding:22px;background:radial-gradient(circle at 18% 18%,#2457ff55,transparent 29%),radial-gradient(circle at 82% 25%,#7045dc55,transparent 28%),linear-gradient(135deg,#06132d,#112f6c)}
+.hero-card{width:min(820px,95vw);padding:38px 32px;border-radius:30px;background:#ffffff14;backdrop-filter:blur(18px);border:1px solid #ffffff35;text-align:center;color:#fff;box-shadow:0 25px 80px #0007}
+.uitm-logo{background:#fff;border-radius:16px;padding:10px;width:min(310px,78%);max-height:120px;object-fit:contain}.hero h1{font-size:clamp(32px,5.5vw,58px);line-height:1.04;margin:20px 0 10px}.hero p{color:#dce8ff;font-size:18px}.creator{margin-top:24px;color:#fff!important;font-size:15px!important;font-weight:900}
+.name-row{display:flex;gap:10px;max-width:580px;margin:25px auto 0}.name-row input{flex:1;padding:16px;border:0;border-radius:14px;outline:none}.primary{border:0;border-radius:13px;padding:13px 18px;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;font-weight:900;cursor:pointer;box-shadow:0 8px 22px #2457ff44}.secondary{border:0;border-radius:12px;padding:11px 15px;background:#eaf0ff;color:var(--blue);font-weight:850;cursor:pointer}
+.topbar{position:sticky;top:0;z-index:5;background:#07152ff5;color:#fff;padding:13px 4vw;display:flex;justify-content:space-between;align-items:center}.brand{font-weight:900}.student{color:#d3e3ff}
+main{width:min(1200px,93vw);margin:28px auto 60px}.welcome{display:flex;justify-content:space-between;gap:18px;align-items:end}.welcome h2{font-size:34px;margin:0 0 5px}.welcome p{margin:0;color:var(--muted)}.score-pill{background:#fff;border-radius:18px;padding:13px 17px;box-shadow:0 8px 30px #23366a18;font-weight:900}
+.progress-wrap{height:12px;background:#dfe8fb;border-radius:99px;overflow:hidden;margin:13px 0 25px}.progress{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--blue),var(--purple));transition:.4s}
+.topics{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:17px}.topic-card{background:#fff;border-radius:22px;padding:21px;box-shadow:0 10px 35px #24386b18;border:1px solid #e8edfa;cursor:pointer;transition:.2s}.topic-card:hover{transform:translateY(-5px)}.topic-card.done{border:2px solid #20b879}.topic-num{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;color:#fff;font-size:22px;font-weight:900;background:linear-gradient(135deg,var(--blue),var(--purple))}.topic-card h3{margin:14px 0 7px}.topic-card p{color:var(--muted);font-size:14px;min-height:58px}.mini-score{font-weight:900;color:var(--blue)}
+.panel,.advanced{background:#fff;border-radius:24px;padding:25px;box-shadow:0 14px 50px #23366a20}.advanced{margin:25px 0;background:linear-gradient(135deg,#f8faff,#faf6ff)}.panel-head{display:flex;justify-content:space-between;gap:15px;align-items:center;border-bottom:1px solid #e7ecf7;padding-bottom:17px;margin-bottom:20px}
+.question{padding:19px;border:1px solid #e5eaf5;border-radius:18px;margin:15px 0;background:#fbfcff}.question h4{margin:0 0 13px}.options{display:grid;gap:8px}.option{padding:11px 13px;border:1px solid #dbe3f4;border-radius:11px;cursor:pointer;background:#fff}.option:hover,.option.selected{border-color:var(--blue);background:#eaf0ff}.fill{padding:12px 14px;border:1px solid #cfd9ed;border-radius:10px;min-width:220px}
+.drag-bank{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0}.drag-item{padding:10px 12px;border-radius:10px;background:#eaf0ff;border:1px solid #bdcdf8;cursor:grab;font-weight:750}.drop-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:9px 0}.dropzone{min-height:48px;border:2px dashed #aebdde;border-radius:12px;padding:9px;background:#f8faff}
+.actions{display:flex;justify-content:flex-end;gap:9px;margin-top:20px}.good{color:var(--good)}.bad{color:var(--bad)}
+.timer{position:fixed;right:18px;top:76px;z-index:6;background:#fff;border-radius:16px;padding:11px 15px;box-shadow:0 8px 25px #0002;font-weight:900;color:var(--blue)}
+.mascot{position:fixed;right:22px;bottom:20px;z-index:7;width:92px;height:92px;border-radius:50%;background:linear-gradient(135deg,#fff,#e9f2ff);display:grid;place-items:center;font-size:52px;box-shadow:0 12px 35px #16275535;animation:bob 2.2s ease-in-out infinite}.bubble{position:absolute;right:78px;bottom:62px;width:200px;background:#fff;border-radius:15px;padding:10px 12px;font-size:13px;font-weight:750;box-shadow:0 8px 25px #0002}@keyframes bob{50%{transform:translateY(-10px) rotate(3deg)}}
+.chartbox{background:#fff;border:1px solid #dfe7f7;border-radius:15px;padding:10px;overflow:hidden}.chartbox canvas{width:100%;height:250px;display:block}.chart-controls{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.leaderboard{width:100%;border-collapse:collapse}.leaderboard th,.leaderboard td{padding:11px;border-bottom:1px solid #e7ebf4;text-align:left}.leaderboard th{color:var(--muted)}
+.result{text-align:center;padding:25px}.big-score{font-size:72px;font-weight:1000;background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;color:transparent}.badge{display:inline-block;padding:8px 14px;border-radius:99px;background:#e9fff5;color:#087a4b;font-weight:900}
+.certificate{border:12px double #44319b;padding:35px;text-align:center;background:#fffdf7;margin:20px 0}.certificate img{width:220px;max-height:90px;object-fit:contain}.certificate h1{font-family:Georgia,serif;color:#392b7b;font-size:40px}.cert-name{font-size:34px;font-family:Georgia,serif;border-bottom:2px solid #9b8bd6;display:inline-block;padding:4px 30px}
+@media print{body *{visibility:hidden}.certificate,.certificate *{visibility:visible}.certificate{position:absolute;left:0;top:0;width:100%;border:10px double #44319b}.topbar,.mascot,.timer{display:none!important}}
+@media(max-width:650px){.name-row,.welcome,.panel-head{flex-direction:column;align-items:stretch}.drop-row{grid-template-columns:1fr}.mascot{width:68px;height:68px;font-size:38px}.bubble{display:none}.timer{top:auto;bottom:18px;left:18px;right:auto}.panel{padding:17px}}
+</style></head>
+<body>
+<section id="landing" class="hero"><div class="hero-card"><img class="uitm-logo" src="assets/uitm-logo.png" alt="UiTM logo"><h1>Welcome to Time Series Analysis and Forecasting Course</h1><p>An interactive learning experience with forecasting challenges, model identification and instant scoring.</p><div class="name-row" style="max-width:760px;flex-wrap:wrap">
+<input id="studentName" placeholder="Student name" style="min-width:220px">
+<input id="studentId" placeholder="Student ID" style="min-width:180px">
+<input id="studentGroup" placeholder="Group" style="min-width:130px">
+<button class="primary" onclick="startCourse()">Start Learning →</button>
+</div><p id="nameError" style="color:#ffd2d2;font-weight:800"></p><p class="creator">Created by Dr Nurul Nisa'</p></div></section>
+<section id="app" class="hidden"><header class="topbar"><div class="brand">📊 TSAF Interactive Course V3</div><div class="student">Student: <b id="studentLabel"></b></div></header><div id="timer" class="timer hidden">⏱ 05:00</div><div class="mascot">🤖<div id="bubble" class="bubble">Ready to forecast? Choose a topic!</div></div>
+<main><section id="dashboard"><div class="welcome"><div><h2>Hello, <span id="helloName"></span>! 👋</h2><p>Complete the topics, explore interactive graphs and master model identification.</p></div><div class="score-pill">Overall Score: <span id="overallScore">0</span>/50</div></div><div class="progress-wrap"><div id="progress" class="progress"></div></div><div id="topicCards" class="topics"></div>
+<div class="advanced"><h3>📈 Interactive Time-Series Laboratory</h3><p>Change the data pattern and inspect the series. Hover over the graph to view observations.</p><div class="chart-controls"><button class="secondary" onclick="drawSeries('trend')">Trend</button><button class="secondary" onclick="drawSeries('seasonal')">Seasonal</button><button class="secondary" onclick="drawSeries('stationary')">Stationary</button><button class="secondary" onclick="drawSeries('randomwalk')">Random Walk</button></div><div class="chartbox"><canvas id="seriesChart"></canvas></div></div>
+<div class="advanced"><h3>🌐 Shared Online Leaderboard</h3><p>Scores are stored in Supabase and shared across devices.</p><div id="leaderboard"></div></div><div class="actions"><button class="secondary" onclick="resetProgress()">Reset Progress</button><button class="primary" onclick="showFinal()">View Results & Certificate</button></div></section>
+<section id="topicPage" class="hidden panel"></section><section id="finalPage" class="hidden panel"></section></main></section>
+<script>
+const SUPABASE_URL="https://khtkvxguglxsbpmekzsh.supabase.co";
+const SUPABASE_KEY="sb_publishable_yjuVfEI05smplbYlgAkfCg_7XWWtofa";
+const SUPABASE_TABLE="student_score";
+
+function sbHeaders(){
+  return {
+    "apikey": SUPABASE_KEY,
+    "Authorization": "Bearer " + SUPABASE_KEY,
+    "Content-Type": "application/json"
+  };
+}
+async function sbRequest(path, options={}){
+  const response = await fetch(SUPABASE_URL + "/rest/v1/" + path, {
+    ...options,
+    headers: {...sbHeaders(), ...(options.headers || {})}
+  });
+  if(!response.ok) throw new Error(await response.text());
+  const text = await response.text();
+  return text ? JSON.parse(text) : null;
+}
+function esc(s){
+  return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
+
+const topics=[
+{title:"Introduction to Time Series",desc:"Definition, components, evaluation and error measures.",qs:[["mcq","Which statement best defines a time series?",["Observations recorded sequentially over time","A random cross-sectional sample","Only categorical data","Unordered observations"],0],["drag","Match the components.",[["Trend","Long-term upward or downward movement"],["Seasonal","Regular repeating pattern"],["Irregular","Unpredictable random variation"]]],["fill","If Actual = 120 and Forecast = 110, the absolute error is ____.",["10"]],["mcq","Which error measure penalizes larger errors more heavily?",["MAE","MSE","ME","MAPE"],1],["mcq","Out-of-sample evaluation uses:",["Training observations only","New observations not used for estimation","Missing observations","Only the first observation"],1]]},
+{title:"Univariate Deterministic Methods",desc:"Naïve, average, smoothing, decomposition and forecasting.",qs:[["mcq","For 20, 24, 22, 27, the naïve forecast for the next period is:",["20","22","23.25","27"],3],["fill","The average forecast based on 10, 14 and 18 is ____.",["14","14.0"]],["mcq","A larger smoothing parameter α gives:",["More weight to recent observations","More weight to old observations","Equal weight to all observations","No weight to recent data"],0],["drag","Match method to pattern.",[["Simple Exponential Smoothing","Level only"],["Holt's Method","Trend"],["Holt-Winters","Trend and seasonality"]]],["mcq","Classical decomposition commonly separates:",["Mean and variance","Trend, seasonal and irregular","AR and MA only","Training and testing"],1]]},
+{title:"Stationarity",desc:"Properties, differencing, unit-root tests and forecasting.",qs:[["mcq","A weakly stationary series has:",["Constant mean and variance over time","Always increasing mean","Zero variance","A deterministic trend"],0],["fill","If Yₜ = 15 and Yₜ₋₁ = 11, then ΔYₜ = ____.",["4","4.0"]],["mcq","The usual null hypothesis of the ADF test is:",["The series is stationary","The series has a unit root","Errors are normal","No autocorrelation"],1],["drag","Match the concepts.",[["Differencing","Subtract consecutive observations"],["Unit root","Common source of non-stationarity"],["Stationary series","Statistical properties remain stable"]]],["mcq","A random walk is generally:",["Stationary in levels","Non-stationary in levels","Always seasonal","MA(0)"],1]]},
+{title:"Box-Jenkins Methodology",desc:"AR, MA, ACF/PACF, ARIMA identification, estimation and forecasting.",qs:[["mcq","For pure AR(p), which function typically cuts off after lag p?",["ACF","PACF","Both","Neither"],1],["mcq","For pure MA(q), which function typically cuts off after lag q?",["ACF","PACF","Both","Neither"],0],["fill","In ARIMA(p,d,q), d is the order of ____.",["differencing","difference"]],["drag","Match Box-Jenkins stages.",[["Identification","Use plots, ACF/PACF and stationarity"],["Estimation","Estimate parameters"],["Diagnostic checking","Examine residual adequacy"],["Forecasting","Generate future predictions"]]],["mcq","Good ARIMA residuals should resemble:",["Strong trend","White noise","Seasonality","Random walk with drift"],1]]},
+{title:"Regression with Autoregressive Errors",desc:"Model adequacy, estimation and applications with serial correlation.",qs:[["mcq","A key issue in time-series regression residuals is:",["Serial correlation","Alphabetical ordering","Too many labels","Chart formatting"],0],["mcq","If eₜ = ρeₜ₋₁ + uₜ, errors follow:",["AR(1)","MA(1)","White noise only","Seasonal decomposition"],0],["fill","When ρ = 0, consecutive errors have zero serial ____.",["correlation","autocorrelation"]],["drag","Match diagnostics and methods.",[["Residual ACF","Detect serial correlation patterns"],["Durbin-Watson statistic","Test first-order autocorrelation"],["Cochrane-Orcutt procedure","Estimate regression with AR(1) errors"]]],["mcq","Ignoring positive serial correlation can make OLS standard errors:",["Potentially misleading","Always zero","Equal to Y","Always unaffected"],0]]}];
+let state={name:"",studentId:"",group:"",scores:[0,0,0,0,0],completed:[false,false,false,false,false]},current=0,timerInt=null,timeLeft=300;
+const $=id=>document.getElementById(id);function say(x){$("bubble").textContent=x}
+function beep(ok){try{let a=new (window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.frequency.value=ok?700:180;g.gain.setValueAtTime(.1,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.25);o.start();o.stop(a.currentTime+.25)}catch(e){}}
+async function startCourse(){
+  let n=document.getElementById("studentName").value.trim();
+  let sid=document.getElementById("studentId").value.trim();
+  let grp=document.getElementById("studentGroup").value.trim();
+  if(!n || !sid || !grp){
+    document.getElementById("nameError").textContent="Please enter Student Name, Student ID and Group.";
+    return;
+  }
+  state={name:n,studentId:sid,group:grp,scores:[0,0,0,0,0],completed:[false,false,false,false,false]};
+  const local=JSON.parse(localStorage.getItem("tsaf-v3-"+sid)||"null");
+  if(local) state=local;
+  try{
+    const rows=await sbRequest(`${SUPABASE_TABLE}?student_id=eq.${encodeURIComponent(sid)}&select=*`);
+    if(rows && rows.length){
+      const r=rows[0];
+      state={
+        name:r.student_name,
+        studentId:r.student_id,
+        group:r.student_group || grp,
+        scores:[r.topic1||0,r.topic2||0,r.topic3||0,r.topic4||0,r.topic5||0],
+        completed:[r.topic1>0,r.topic2>0,r.topic3>0,r.topic4>0,r.topic5>0]
+      };
+    }
+  }catch(e){ console.error("Supabase load:",e); }
+  saveLocal();
+  landing.classList.add("hidden"); app.classList.remove("hidden"); renderDashboard();
+}
+function saveLocal(){
+  localStorage.setItem("tsaf-v3-"+state.studentId,JSON.stringify(state));
+}
+async function syncScore(){
+  saveLocal();
+  const total=state.scores.reduce((a,b)=>a+b,0);
+  const payload={
+    student_name:state.name, student_id:state.studentId, student_group:state.group,
+    topic1:state.scores[0], topic2:state.scores[1], topic3:state.scores[2],
+    topic4:state.scores[3], topic5:state.scores[4],
+    total_score:total, percentage:total*2, completed_at:new Date().toISOString()
+  };
+  try{
+    const existing=await sbRequest(`${SUPABASE_TABLE}?student_id=eq.${encodeURIComponent(state.studentId)}&select=id`);
+    if(existing && existing.length){
+      await sbRequest(`${SUPABASE_TABLE}?student_id=eq.${encodeURIComponent(state.studentId)}`,{
+        method:"PATCH", headers:{"Prefer":"return=minimal"}, body:JSON.stringify(payload)
+      });
+    }else{
+      await sbRequest(SUPABASE_TABLE,{
+        method:"POST", headers:{"Prefer":"return=minimal"}, body:JSON.stringify(payload)
+      });
+    }
+    await renderLeaderboard();
+  }catch(e){
+    console.error("Supabase sync:",e);
+    say("Score saved locally, but online sync failed. Check internet or RLS settings.");
+  }
+}
+async function renderLeaderboard(){
+  try{
+    const all=await sbRequest(`${SUPABASE_TABLE}?select=student_name,student_id,student_group,total_score,percentage&order=total_score.desc&limit=50`);
+    leaderboard.innerHTML=all.length?`<table class="leaderboard"><tr><th>Rank</th><th>Student</th><th>ID</th><th>Group</th><th>Score</th></tr>${all.map((x,i)=>`<tr><td>${i<3?["🥇","🥈","🥉"][i]:i+1}</td><td>${esc(x.student_name)}</td><td>${esc(x.student_id)}</td><td>${esc(x.student_group||"-")}</td><td><b>${x.total_score||0}/50 (${x.percentage||0}%)</b></td></tr>`).join("")}</table>`:"No online scores yet.";
+  }catch(e){
+    leaderboard.innerHTML="<span class='bad'>Could not load online leaderboard. Check internet connection and Supabase RLS policies.</span>";
+    console.error("Leaderboard:",e);
+  }
+}
+function renderDashboard(){clearInterval(timerInt);$("timer").classList.add("hidden");$("dashboard").classList.remove("hidden");$("topicPage").classList.add("hidden");$("finalPage").classList.add("hidden");$("studentLabel").textContent=state.name;$("helloName").textContent=state.name;let total=state.scores.reduce((a,b)=>a+b,0);$("overallScore").textContent=total;$("progress").style.width=total*2+"%";$("topicCards").innerHTML=topics.map((t,i)=>`<article class="topic-card ${state.completed[i]?'done':''}" onclick="openTopic(${i})"><div class="topic-num">${i+1}</div><h3>${t.title}</h3><p>${t.desc}</p><div class="mini-score">${state.completed[i]?'✓ Completed':'Score'}: ${state.scores[i]}/10</div></article>`).join("");renderLeaderboard();setTimeout(()=>drawSeries("trend"),50);say("Choose a topic or explore the interactive time-series laboratory!")}
+function startTimer(){clearInterval(timerInt);timeLeft=300;$("timer").classList.remove("hidden");tick();timerInt=setInterval(()=>{timeLeft--;tick();if(timeLeft<=0){clearInterval(timerInt);say("Time is up! Submit your answers when ready.")}},1000)}
+function tick(){let m=Math.floor(timeLeft/60),s=timeLeft%60;$("timer").textContent=`⏱ ${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`}
+function openTopic(i){current=i;$("dashboard").classList.add("hidden");$("topicPage").classList.remove("hidden");$("topicPage").innerHTML=`<div class="panel-head"><div><small>TOPIC ${i+1}</small><h2>${topics[i].title}</h2><p>${topics[i].desc}</p></div><button class="secondary" onclick="renderDashboard()">← Dashboard</button></div>${i===3?acfLab():""}<div id="questions">${topics[i].qs.map((q,j)=>renderQ(q,j)).join("")}</div><div id="topicFeedback"></div><div class="actions"><button class="primary" onclick="submitTopic()">Submit Topic</button></div>`;setupDrag();if(i===3)setTimeout(()=>drawACF("AR1"),50);startTimer();say("You have 5 minutes. Good luck!")}
+function renderQ(q,j){if(q[0]==="mcq")return `<div class="question" data-type="mcq"><h4>${j+1}. ${q[1]}</h4><div class="options">${q[2].map((o,k)=>`<div class="option" data-v="${k}" onclick="selectOption(this)">${o}</div>`).join("")}</div></div>`;if(q[0]==="fill")return `<div class="question" data-type="fill"><h4>${j+1}. ${q[1]}</h4><input class="fill" placeholder="Type your answer"></div>`;return `<div class="question" data-type="drag"><h4>${j+1}. ${q[1]}</h4><div class="drag-bank">${shuffle(q[2].map(x=>x[0])).map(x=>`<div class="drag-item" draggable="true" data-label="${x}">${x}</div>`).join("")}</div>${q[2].map(x=>`<div class="drop-row"><div>${x[1]}</div><div class="dropzone" data-answer="${x[0]}">Drop here</div></div>`).join("")}</div>`}
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}function selectOption(e){e.parentElement.querySelectorAll(".option").forEach(x=>x.classList.remove("selected"));e.classList.add("selected")}
+function setupDrag(){let d=null;document.querySelectorAll(".drag-item").forEach(x=>x.ondragstart=()=>d=x);document.querySelectorAll(".dropzone").forEach(z=>{z.ondragover=e=>e.preventDefault();z.ondrop=e=>{e.preventDefault();if(d){z.innerHTML="";z.appendChild(d);d=null}}})}
+function submitTopic(){clearInterval(timerInt);let correct=0,qs=topics[current].qs;document.querySelectorAll("#questions .question").forEach((el,j)=>{let q=qs[j],ok=false;if(q[0]==="mcq"){let s=el.querySelector(".selected");ok=!!s&&+s.dataset.v===q[3]}else if(q[0]==="fill"){let v=el.querySelector("input").value.trim().toLowerCase();ok=q[2].map(x=>x.toLowerCase()).includes(v)}else ok=[...el.querySelectorAll(".dropzone")].every(z=>z.firstElementChild&&z.firstElementChild.dataset.label===z.dataset.answer);if(ok)correct++});let score=correct*2;state.scores[current]=score;state.completed[current]=true;saveLocal();syncScore();beep(score>=6);say(score>=8?"Excellent! You're becoming a forecasting star! 🌟":score>=6?"Good work! Keep going! 📈":"Try again and review the concepts. You can do it! 💪");$("topicFeedback").innerHTML=`<div class="question ${score>=6?'good':'bad'}"><h3>${score>=8?'Excellent work! 🎉':score>=6?'Good effort! 👍':'Keep practising! 📚'}</h3>You scored <b>${score}/10</b> (${correct}/5 correct).</div><div class="actions"><button class="secondary" onclick="openTopic(${current})">Try Again</button><button class="primary" onclick="renderDashboard()">Dashboard</button></div>`;scrollTo({top:document.body.scrollHeight,behavior:"smooth"})}
+function acfLab(){return `<div class="advanced"><h3>🔬 ACF/PACF Model Identification Laboratory</h3><p>Explore theoretical identification patterns.</p><div class="chart-controls"><button class="secondary" onclick="drawACF('AR1')">AR(1)</button><button class="secondary" onclick="drawACF('AR2')">AR(2)</button><button class="secondary" onclick="drawACF('MA1')">MA(1)</button><button class="secondary" onclick="drawACF('MA2')">MA(2)</button></div><div class="chartbox"><canvas id="acfChart"></canvas></div><p id="acfHint"></p></div>`}
+function canvasSetup(id){let c=$(id),d=devicePixelRatio||1,r=c.getBoundingClientRect();c.width=r.width*d;c.height=250*d;let x=c.getContext("2d");x.scale(d,d);return [x,r.width,250,c]}
+function drawSeries(type){let [x,w,h,c]=canvasSetup("seriesChart"),n=36,data=[];for(let i=0;i<n;i++){let noise=(Math.random()-.5)*6;if(type==="trend")data.push(20+i*.8+noise);if(type==="seasonal")data.push(30+10*Math.sin(i*Math.PI/3)+noise);if(type==="stationary")data.push(30+noise);if(type==="randomwalk")data.push((data[i-1]||25)+noise*.55)}let min=Math.min(...data)-3,max=Math.max(...data)+3;x.clearRect(0,0,w,h);x.fillStyle="#17223d";x.font="bold 14px Segoe UI";x.fillText(type.toUpperCase()+" TIME SERIES",14,20);x.strokeStyle="#dce4f3";for(let k=0;k<5;k++){let y=35+k*44;x.beginPath();x.moveTo(35,y);x.lineTo(w-15,y);x.stroke()}x.strokeStyle="#2457ff";x.lineWidth=2.5;x.beginPath();data.forEach((v,i)=>{let px=35+i*(w-55)/(n-1),py=220-(v-min)/(max-min)*175;i?x.lineTo(px,py):x.moveTo(px,py)});x.stroke();c.onmousemove=e=>{let r=c.getBoundingClientRect(),idx=Math.round((e.clientX-r.left-35)*(n-1)/(w-55));if(idx>=0&&idx<n)c.title=`Time ${idx+1}: ${data[idx].toFixed(2)}`}}
+function drawACF(model){let [x,w,h]=canvasSetup("acfChart"),acf=[],pacf=[];for(let k=1;k<=12;k++){if(model==="AR1"){acf.push(.75**k);pacf.push(k===1?.75:0)}if(model==="AR2"){acf.push(.72**k*Math.cos(k*.55));pacf.push(k===1?.65:k===2?-.35:0)}if(model==="MA1"){acf.push(k===1?.55:0);pacf.push(.55**k*(k%2?1:-1))}if(model==="MA2"){acf.push(k===1?.55:k===2?.3:0);pacf.push(.65**k*(k%2?1:-1))}}x.clearRect(0,0,w,h);let half=w/2;["ACF","PACF"].forEach((name,j)=>{let ox=j*half;x.fillStyle="#17223d";x.font="bold 14px Segoe UI";x.fillText(name,ox+15,20);let base=125;x.strokeStyle="#9eabc5";x.beginPath();x.moveTo(ox+30,base);x.lineTo(ox+half-10,base);x.stroke();let vals=j?pacf:acf;vals.forEach((v,i)=>{let px=ox+35+i*(half-55)/11;x.strokeStyle="#2457ff";x.lineWidth=5;x.beginPath();x.moveTo(px,base);x.lineTo(px,base-v*90);x.stroke()})});$("acfHint").innerHTML=`<b>${model.replace("AR1","AR(1)").replace("AR2","AR(2)").replace("MA1","MA(1)").replace("MA2","MA(2)")}</b>: ${model.startsWith("AR")?"ACF tails off; PACF cuts off.":"ACF cuts off; PACF tails off."}`}
+function showFinal(){clearInterval(timerInt);$("timer").classList.add("hidden");$("dashboard").classList.add("hidden");$("finalPage").classList.remove("hidden");let total=state.scores.reduce((a,b)=>a+b,0),pct=Math.round(total*2),label=pct>=80?"Forecasting Star 🌟":pct>=60?"Skilled Forecaster 📈":"Forecasting Explorer 🚀",date=new Date().toLocaleDateString("en-MY",{day:"numeric",month:"long",year:"numeric"});$("finalPage").innerHTML=`<div class="result"><div style="font-size:55px">🏆</div><h2>Course Activity Results</h2><p>Well done, <b>${state.name}</b>!</p><div class="big-score">${total}/50</div><div class="badge">${label} · ${pct}%</div></div>${topics.map((t,i)=>`<div class="question"><b>Topic ${i+1}: ${t.title}</b><span style="float:right;font-weight:900">${state.scores[i]}/10</span></div>`).join("")}<div class="certificate"><img src="assets/uitm-logo.png"><h1>Certificate of Achievement</h1><p>This certificate is proudly presented to</p><div class="cert-name">${state.name}</div><p>Student ID: <b>${state.studentId}</b> &nbsp; | &nbsp; Group: <b>${state.group}</b></p><p>for completing the interactive learning activities in</p><h2>Time Series Analysis and Forecasting</h2><p>Achievement: <b>${label}</b> &nbsp; | &nbsp; Score: <b>${total}/50 (${pct}%)</b></p><p>${date}</p><p><b>Created by Dr Nurul Nisa'</b></p></div><div class="actions"><button class="secondary" onclick="renderDashboard()">Dashboard</button><button class="primary" onclick="window.print()">Print / Save Certificate as PDF</button></div>`;say("Congratulations! Your certificate is ready! 🎓")}
+function resetProgress(){if(confirm("Reset all progress for this student?")){state.scores=[0,0,0,0,0];state.completed=[false,false,false,false,false];save();renderDashboard()}}
+$("studentName").addEventListener("keydown",e=>{if(e.key==="Enter")startCourse()});
+</script></body></html>
